@@ -1,0 +1,205 @@
+table fato
+	lineageTag: bbe341d0-1360-41ac-a657-755ac00619ab
+
+	column num_venda
+		dataType: string
+		lineageTag: a4c8accc-3cde-4320-863e-6e6822b56a41
+		summarizeBy: none
+		sourceColumn: num_venda
+
+		annotation SummarizationSetBy = Automatic
+
+	column vendedor_cod
+		dataType: string
+		lineageTag: 346b835d-9f98-4f40-bb32-934c70ed94cd
+		summarizeBy: none
+		sourceColumn: vendedor_cod
+
+		annotation SummarizationSetBy = Automatic
+
+	column cliente_cod
+		dataType: string
+		lineageTag: befda72c-fe43-4342-8f0c-f71137073b14
+		summarizeBy: none
+		sourceColumn: cliente_cod
+
+		annotation SummarizationSetBy = Automatic
+
+	column produto_cod
+		dataType: string
+		lineageTag: 893767cf-32b5-41a6-a38e-1681d3d6a420
+		summarizeBy: none
+		sourceColumn: produto_cod
+
+		annotation SummarizationSetBy = Automatic
+
+	column produto_custo_unitario
+		dataType: decimal
+		formatString: "R$"\ #,0.###############;-"R$"\ #,0.###############;"R$"\ #,0.###############
+		lineageTag: 4d171f3b-5fe3-4aa8-843c-a8104fbfd849
+		summarizeBy: sum
+		sourceColumn: produto_custo_unitario
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"currencyCulture":"pt-BR"}
+
+	column qtd_itens
+		dataType: double
+		lineageTag: b2b3bd9c-da57-485b-b15f-026edd3f486d
+		summarizeBy: sum
+		sourceColumn: qtd_itens
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column preco_unitario
+		dataType: decimal
+		formatString: "R$"\ #,0.###############;-"R$"\ #,0.###############;"R$"\ #,0.###############
+		lineageTag: 28816d73-6a2a-4ff4-87a7-7a813ce9d338
+		summarizeBy: sum
+		sourceColumn: preco_unitario
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"currencyCulture":"pt-BR"}
+
+	column valor_bruto
+		dataType: decimal
+		formatString: "R$"\ #,0.###############;-"R$"\ #,0.###############;"R$"\ #,0.###############
+		lineageTag: 861ccc86-a4ce-4430-8d61-dbc12a6b354a
+		summarizeBy: sum
+		sourceColumn: valor_bruto
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"currencyCulture":"pt-BR"}
+
+	column ocorrencia_devolucao
+		dataType: string
+		lineageTag: e9545f53-e824-4ccd-8e0e-fb7a5ca5f6f6
+		summarizeBy: none
+		sourceColumn: ocorrencia_devolucao
+
+		annotation SummarizationSetBy = Automatic
+
+	column atraso_entrega_dias
+		dataType: int64
+		formatString: 0
+		lineageTag: 631c2b78-5e87-4347-8bda-608215a7201b
+		summarizeBy: sum
+		sourceColumn: atraso_entrega_dias
+
+		annotation SummarizationSetBy = Automatic
+
+	column atrasou_entrega
+		dataType: string
+		lineageTag: 377c9d45-3b66-46f6-9b09-5e8256de7db8
+		summarizeBy: none
+		sourceColumn: atrasou_entrega
+
+		annotation SummarizationSetBy = Automatic
+
+	column cod_data_venda
+		dataType: string
+		lineageTag: e5147484-721e-4f8c-b57b-ad4f62f35ea0
+		summarizeBy: none
+		sourceColumn: cod_data_venda
+
+		annotation SummarizationSetBy = Automatic
+
+	column cod_data_entrega_prevista
+		dataType: string
+		lineageTag: 17acf5dc-a7c7-4aa2-ab15-8488bce5ce74
+		summarizeBy: none
+		sourceColumn: cod_data_entrega_prevista
+
+		annotation SummarizationSetBy = Automatic
+
+	column cod_data_entrega
+		dataType: int64
+		formatString: 0
+		lineageTag: e33a00a3-dcdf-463d-bdb6-75131f243351
+		summarizeBy: none
+		sourceColumn: cod_data_entrega
+
+		annotation SummarizationSetBy = Automatic
+
+	column supervisor_cod
+		dataType: string
+		lineageTag: e9deb17c-012b-4fa5-a852-5f69943a1f93
+		summarizeBy: none
+		sourceColumn: supervisor_cod
+
+		annotation SummarizationSetBy = Automatic
+
+	column equipe_cod
+		dataType: string
+		lineageTag: 051cc638-dd08-475b-97eb-49275e2ffeaf
+		summarizeBy: none
+		sourceColumn: equipe_cod
+
+		annotation SummarizationSetBy = Automatic
+
+	column cidade_cod
+		dataType: string
+		lineageTag: 58e9b607-dfb8-41a5-ac67-a92010eec9ca
+		summarizeBy: none
+		sourceColumn: cidade_cod
+
+		annotation SummarizationSetBy = Automatic
+
+	column valor_liquido = ```
+			
+			    (fato[preco_unitario] - fato[produto_custo_unitario]) * fato[qtd_itens]
+			```
+		formatString: "R$"\ #,0.00;-"R$"\ #,0.00;"R$"\ #,0.00
+		lineageTag: 07474634-05e8-4c23-95fb-84518aada7d6
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"currencyCulture":"pt-BR"}
+
+	partition fato = m
+		mode: import
+		source =
+				let
+				    Fonte = Excel.Workbook(File.Contents("C:\Users\CaioAraujo\Downloads\base_processo_seletivo_dataside.xlsx"), null, true),
+				    Export_Sheet = Fonte{[Item="Export",Kind="Sheet"]}[Data],
+				    #"Cabeçalhos Promovidos" = Table.PromoteHeaders(Export_Sheet, [PromoteAllScalars=true]),
+				    #"Tipo Alterado" = Table.TransformColumnTypes(#"Cabeçalhos Promovidos",{{"Relatório de vendas", type any}, {"Column2", type any}, {"Column3", type any}, {"Column4", type any}, {"Column5", type any}, {"Column6", type text}, {"Column7", type text}, {"Column8", type text}, {"Column9", type any}, {"Column10", type text}, {"Column11", type text}, {"Column12", type any}, {"Column13", type text}, {"Column14", type any}, {"Column15", type text}, {"Column16", type text}, {"Column17", type text}, {"Column18", type text}, {"Column19", type any}, {"Column20", type any}, {"Column21", type any}, {"Column22", type any}, {"Column23", type any}}),
+				    #"Linhas Superiores Removidas" = Table.Skip(#"Tipo Alterado",3),
+				    #"Linhas alternadas removidas" = Table.AlternateRows(#"Linhas Superiores Removidas",1,2,2),
+				    #"Cabeçalhos Promovidos1" = Table.PromoteHeaders(#"Linhas alternadas removidas", [PromoteAllScalars=true]),
+				    #"Cabeçalhos Promovidos2" = Table.PromoteHeaders(#"Cabeçalhos Promovidos1", [PromoteAllScalars=true]),
+				    #"Tipo Alterado3" = Table.TransformColumnTypes(#"Cabeçalhos Promovidos2",{{"num_venda", type text}}),
+				    #"Colunas Renomeadas" = Table.RenameColumns(#"Tipo Alterado3",{{"Column2", "data_venda"}, {"Column3", "data_entrega_prevista"}}),
+				    #"Tipo Alterado1" = Table.TransformColumnTypes(#"Colunas Renomeadas",{{"data_venda", type date}, {"data_entrega_prevista", type date}, {"data_entrega", type date}, {"vendedor_cod", type text}, {"produto_cod", type text}, {"produto_custo_unitario", Currency.Type}, {"qtd_itens", type number}, {"preco_unitario", Currency.Type}, {"valor_bruto", Currency.Type}, {"ocorrencia_devolucao", type text}}),
+				    #"Linhas em Branco Removidas" = Table.SelectRows(#"Tipo Alterado1", each not List.IsEmpty(List.RemoveMatchingItems(Record.FieldValues(_), {"", null}))),
+				    #"Personalização Adicionada" = Table.AddColumn(#"Linhas em Branco Removidas", "atraso_entrega_dias", each [data_entrega] - [data_entrega_prevista]),
+				    #"Tipo Alterado2" = Table.TransformColumnTypes(#"Personalização Adicionada",{{"atraso_entrega_dias", Int64.Type}}),
+				    #"Coluna Condicional Adicionada" = Table.AddColumn(#"Tipo Alterado2", "atrasou_entrega", each if [atraso_entrega_dias] > 0 then "sim" else if [atraso_entrega_dias] <= 0 then "não" else null),
+				    #"Tipo Alterado4" = Table.TransformColumnTypes(#"Coluna Condicional Adicionada",{{"atrasou_entrega", type text}}),
+				    #"Erros Substituídos" = Table.ReplaceErrorValues(#"Tipo Alterado4", {{"atrasou_entrega", null}}),
+				    #"join venda" = Table.NestedJoin(#"Erros Substituídos", {"data_venda"}, dim_data_venda, {"data_venda"}, "dim_data_venda", JoinKind.LeftOuter),
+				    #"dim_data_venda Expandido" = Table.ExpandTableColumn(#"join venda", "dim_data_venda", {"cod_data_venda"}, {"cod_data_venda"}),
+				    #"join entrega prevista" = Table.NestedJoin(#"dim_data_venda Expandido", {"data_entrega_prevista"}, dim_data_entrega_prevista, {"data_entrega_prevista"}, "dim_data_entrega_prevista", JoinKind.LeftOuter),
+				    #"dim_data_entrega_prevista Expandido" = Table.ExpandTableColumn(#"join entrega prevista", "dim_data_entrega_prevista", {"cod_data_entrega_prevista"}, {"cod_data_entrega_prevista"}),
+				    #"join entrega" = Table.NestedJoin(#"dim_data_entrega_prevista Expandido", {"data_entrega"}, dim_data_entrega, {"data_entrega"}, "dim_data_entrega", JoinKind.LeftOuter),
+				    #"dim_data_entrega Expandido" = Table.ExpandTableColumn(#"join entrega", "dim_data_entrega", {"cod_data_entrega"}, {"cod_data_entrega"}),
+				    #"join supervisor" = Table.NestedJoin(#"dim_data_entrega Expandido", {"vendedor_supervisor"}, dim_supervisor, {"vendedor_supervisor"}, "dim_supervisor", JoinKind.LeftOuter),
+				    #"dim_supervisor Expandido" = Table.ExpandTableColumn(#"join supervisor", "dim_supervisor", {"supervisor_cod"}, {"supervisor_cod"}),
+				    #"join equipe" = Table.NestedJoin(#"dim_supervisor Expandido", {"vendedor_equipe"}, dim_equipe, {"vendedor_equipe"}, "dim_equipe", JoinKind.LeftOuter),
+				    #"dim_equipe Expandido" = Table.ExpandTableColumn(#"join equipe", "dim_equipe", {"equipe_cod"}, {"equipe_cod"}),
+				    #"Colunas Removidas" = Table.RemoveColumns(#"dim_equipe Expandido",{"data_venda", "data_entrega_prevista", "data_entrega", "vendedor_nom", "vendedor_supervisor", "vendedor_equipe", "Column10", "Column11", "Column13", "produto_nome", "produto_grupo", "produto_linha", "produto_fornecedor"}),
+				    #"Colunas Renomeadas1" = Table.RenameColumns(#"Colunas Removidas",{{"Column9", "cliente_cod"}, {"Column12", "cidade_cod"}}),
+				    #"Tipo Alterado5" = Table.TransformColumnTypes(#"Colunas Renomeadas1",{{"cliente_cod", type text}, {"cidade_cod", type text}})
+				in
+				    #"Tipo Alterado5"
+
+	annotation PBI_NavigationStepName = Navegação
+
+	annotation PBI_ResultType = Table
+

@@ -1,0 +1,60 @@
+table dim_vendedor
+	lineageTag: 7d0c339a-52b3-4bf3-9a4b-2dd7b3332c0d
+
+	column vendedor_cod
+		dataType: string
+		lineageTag: 4db7b466-1eb9-4e1b-b2a0-aed72d770922
+		summarizeBy: none
+		sourceColumn: vendedor_cod
+
+		annotation SummarizationSetBy = Automatic
+
+	column vendedor_nom
+		dataType: string
+		lineageTag: 7d56abdb-3ff9-468b-b038-161f0a5ce2f2
+		summarizeBy: none
+		sourceColumn: vendedor_nom
+
+		annotation SummarizationSetBy = Automatic
+
+	column supervisor
+		dataType: string
+		lineageTag: c73141e1-865d-49b2-a142-0d1ffea0b560
+		summarizeBy: none
+		sourceColumn: supervisor
+
+		annotation SummarizationSetBy = Automatic
+
+	column equipe
+		dataType: string
+		lineageTag: 2564bb9c-2f41-4df2-b669-594d78e23e10
+		summarizeBy: none
+		sourceColumn: equipe
+
+		annotation SummarizationSetBy = Automatic
+
+	partition dim_vendedor = m
+		mode: import
+		source =
+				let
+				    Fonte = Excel.Workbook(File.Contents("C:\Users\CaioAraujo\Downloads\base_processo_seletivo_dataside.xlsx"), null, true),
+				    Export_Sheet = Fonte{[Item="Export",Kind="Sheet"]}[Data],
+				    #"Cabeçalhos Promovidos" = Table.PromoteHeaders(Export_Sheet, [PromoteAllScalars=true]),
+				    #"Tipo Alterado" = Table.TransformColumnTypes(#"Cabeçalhos Promovidos",{{"Relatório de vendas", type any}, {"Column2", type any}, {"Column3", type any}, {"Column4", type any}, {"Column5", type any}, {"Column6", type text}, {"Column7", type text}, {"Column8", type text}, {"Column9", type any}, {"Column10", type text}, {"Column11", type text}, {"Column12", type any}, {"Column13", type text}, {"Column14", type any}, {"Column15", type text}, {"Column16", type text}, {"Column17", type text}, {"Column18", type text}, {"Column19", type any}, {"Column20", type any}, {"Column21", type any}, {"Column22", type any}, {"Column23", type any}}),
+				    #"Linhas Superiores Removidas" = Table.Skip(#"Tipo Alterado",3),
+				    #"Outras Colunas Removidas" = Table.SelectColumns(#"Linhas Superiores Removidas",{"Column5", "Column6", "Column7", "Column8"}),
+				    #"Linhas Superiores Removidas1" = Table.Skip(#"Outras Colunas Removidas",3),
+				    #"Cabeçalhos Promovidos1" = Table.PromoteHeaders(#"Linhas Superiores Removidas1", [PromoteAllScalars=true]),
+				    #"Tipo Alterado1" = Table.TransformColumnTypes(#"Cabeçalhos Promovidos1",{{"vendedor_cod", Int64.Type}, {"vendedor_nom", type text}, {"vendedor_supervisor", type text}, {"vendedor_equipe", type text}}),
+				    #"Linhas em Branco Removidas" = Table.SelectRows(#"Tipo Alterado1", each not List.IsEmpty(List.RemoveMatchingItems(Record.FieldValues(_), {"", null}))),
+				    #"Tipo Alterado2" = Table.TransformColumnTypes(#"Linhas em Branco Removidas",{{"vendedor_cod", type text}}),
+				    #"Duplicatas Removidas" = Table.Distinct(#"Tipo Alterado2", {"vendedor_cod"}),
+				    #"Linhas Classificadas" = Table.Sort(#"Duplicatas Removidas",{{"vendedor_supervisor", Order.Ascending}}),
+				    #"Colunas Renomeadas" = Table.RenameColumns(#"Linhas Classificadas",{{"vendedor_supervisor", "supervisor"}, {"vendedor_equipe", "equipe"}})
+				in
+				    #"Colunas Renomeadas"
+
+	annotation PBI_NavigationStepName = Navegação
+
+	annotation PBI_ResultType = Table
+

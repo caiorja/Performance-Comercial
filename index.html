@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Performance Comercial | Projetos PowerBI</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/styles.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="container">
+        <h1>Performance Comercial</h1>
+        <p>Projeto público com imagens do dashboard e link para navegação no Power BI.</p>
+      </div>
+    </header>
+
+    <main class="container">
+      <section class="cta">
+        <a class="btn" target="_blank" rel="noopener" href="https://app.powerbi.com/view?r=eyJrIjoiNzk3NDYyMTQtZjgwYi00YmQwLWJlY2UtNGY4MTYxY2E1OTY5IiwidCI6IjA5ZjRiZmNhLTY3Y2QtNGU0Zi05NjNkLWExYzk1MzEyNmMwNCJ9">Abrir dashboard no Power BI</a>
+      </section>
+
+      <section class="embed">
+        <h2>Visualização integrada</h2>
+        <div class="embed-wrapper">
+          <iframe
+            title="Performance Comercial"
+            src="https://app.powerbi.com/view?r=eyJrIjoiNzk3NDYyMTQtZjgwYi00YmQwLWJlY2UtNGY4MTYxY2E1OTY5IiwidCI6IjA5ZjRiZmNhLTY3Y2QtNGU0Zi05NjNkLWExYzk1MzEyNmMwNCJ9"
+            frameborder="0"
+            allowfullscreen
+          ></iframe>
+        </div>
+      </section>
+
+      <section class="gallery">
+        <h2>Imagens do dashboard</h2>
+        <p class="hint">Todas as imagens foram extraídas do PDF (capa excluída).</p>
+        <div class="grid">
+          <figure>
+            <img src="assets/images/page-02.png" alt="Página 2 - Performance Comercial" loading="lazy" />
+            <figcaption>Página 2</figcaption>
+          </figure>
+          <figure>
+            <img src="assets/images/page-03.png" alt="Página 3 - Performance Comercial" loading="lazy" />
+            <figcaption>Página 3</figcaption>
+          </figure>
+          <figure>
+            <img src="assets/images/page-04.png" alt="Página 4 - Performance Comercial" loading="lazy" />
+            <figcaption>Página 4</figcaption>
+          </figure>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container">
+        <small>© <span id="year"></span> Projetos PowerBI · Performance Comercial</small>
+      </div>
+    </footer>
+
+    <script>
+      document.getElementById('year').textContent = new Date().getFullYear();
+    </script>
+  </body>
+  </html>
