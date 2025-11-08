@@ -1,5 +1,5 @@
 """
-Extrai imagens das páginas do PDF (exceto a capa) e salva em assets/images
+Extrai imagens das páginas do PDF (exceto a capa) e salva em dashboards/Performance-Comercial/images
 
 Requisitos: PyMuPDF (fitz)
 """
@@ -51,7 +51,7 @@ def extract_images_from_pdf(pdf_path: Path, output_dir: Path, zoom: float = 2.0,
 def main():
     base_dir = Path(__file__).resolve().parent.parent  # pasta "Performance Comercial"
     pdf_path = base_dir / "Performance Comercial.pdf"
-    output_dir = base_dir / "assets" / "images"
+    output_dir = base_dir / "dashboards" / "Performance-Comercial" / "images"
 
     try:
         count = extract_images_from_pdf(pdf_path, output_dir, zoom=2.0, skip_first_page=True)
