@@ -1,34 +1,59 @@
-﻿# Performance Comercial
+# Performance Comercial — Dashboard Power BI (PBIP)
 
-Projeto PBIP público no padrão do repositório "Investimentos". Este repositório contém o relatório e o modelo semântico versionados, além de metadados e imagens de referência.
+Este repositório contém o projeto Power BI em formato PBIP do dashboard "Performance Comercial".
+Ele segue o padrão do repositório "Investimentos" para facilitar versionamento, colaboração e reprodução do ambiente.
 
-Visualização pública (Power BI):
+## Visualização online
+
+Veja o dashboard publicado no Power BI Service:
+
 https://app.powerbi.com/view?r=eyJrIjoiNzk3NDYyMTQtZjgwYi00YmQwLWJlY2UtNGY4MTYxY2E1OTY5IiwidCI6IjA5ZjRiZmNhLTY3Y2QtNGU0Zi05NjNkLWExYzk1MzEyNmMwNCJ9
 
-Como abrir no Power BI Desktop (PBIP):
-1. Abra o Power BI Desktop atualizado.
-2. Vá em Arquivo > Abrir relatório (.pbip).
-3. Selecione: `dashboards/Performance-Comercial/Performance Comercial.pbip`.
+Observação: acesso e visibilidade dependem das configurações de compartilhamento do relatório no Power BI.
 
-Estrutura do repositório:
+## Imagens do dashboard
+
+Imagens selecionadas (apenas duas):
+
+![Resumo](assets/screenshots/pg01.jpg)
+![Visão 2](assets/screenshots/pg02.jpg)
+
+## Como abrir o projeto (PBIP)
+
+1. Instale o Power BI Desktop (2023+ recomendado).
+2. Clone este repositório.
+3. No Power BI Desktop, abra o arquivo PBIP em `dashboards/Performance-Comercial/Performance Comercial.pbip`.
+
+## Estrutura do repositório
+
 - `dashboards/Performance-Comercial/`
-  - `Performance Comercial.pbip`
-  - `Performance Comercial.Report/`
-    - `report.json`
-  - `Performance Comercial.SemanticModel/`
-    - `definition/` (model, tables, relationships)
-    - `definition.pbism`
-    - `diagramLayout.json`
-  - `images/` (imagens extraídas do PDF para documentação)
-  - `METADATA.json` (descrição e caminhos do projeto)
-- `scripts/`
-  - `extract_images.py` (reexecuta extração de imagens do PDF para `dashboards/Performance-Comercial/images`)
+  - `Performance Comercial.pbip`: projeto Power BI do dashboard.
+  - `Performance Comercial.Report/`: artefatos do relatório (inclui `report.json`).
+  - `Performance Comercial.SemanticModel/`: modelo semântico (`definition/`, `definition.pbism`, `diagramLayout.json`).
+  - `METADATA.json`: metadados (páginas, fontes, etc.).
+- `assets/screenshots/pg01.jpg` e `assets/screenshots/pg02.jpg`: imagens padrão.
+- `README.md`: guia principal de uso e manutenção.
+- `LICENSE`: licença do projeto (MIT).
 
-Regerar imagens do PDF (sem capa):
-```bash
-python scripts/extract_images.py
-```
+## Boas práticas de versionamento (PBIP)
 
-Observações:
-- Arquivos locais do PBIP como `**/.pbi/localSettings.json` e `**/.pbi/cache.abf` estão ignorados via `.gitignore`.
-- Não há página estática ou GitHub Pages; o foco é o projeto PBIP e a visualização pública via Power BI.
+- Ignorar arquivos locais/cache do Power BI (`**/.pbi/localSettings.json`, `**/.pbi/cache.abf`).
+- Utilizar mensagens de commit claras (feat, fix, docs, etc.).
+- Em mudanças maiores, utilizar branches e Pull Requests.
+
+## Atualizações e manutenção
+
+1. Faça alterações no Power BI Desktop e salve o PBIP.
+2. No Git:
+   - `git add -A`
+   - `git commit -m "descrição da mudança"`
+   - `git push`
+
+## Conexões e dados
+
+Este repositório não inclui credenciais sensíveis. Ajuste `Data Source Settings`
+ao abrir o PBIP e valide caminhos/permissões conforme seu ambiente.
+
+## Licença
+
+Este projeto está licenciado sob MIT. Veja o arquivo [LICENSE](LICENSE) para detalhes.
