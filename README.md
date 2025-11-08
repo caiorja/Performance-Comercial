@@ -34,6 +34,7 @@ Imagens selecionadas (apenas duas):
 - `assets/screenshots/pg01.jpg` e `assets/screenshots/pg02.jpg`: imagens padrão.
 - `README.md`: guia principal de uso e manutenção.
 - `LICENSE`: licença do projeto (MIT).
+- `report.json`: relatório de execução do agente e catálogo de publicação.
 
 ## Boas práticas de versionamento (PBIP)
 

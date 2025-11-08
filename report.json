@@ -1,0 +1,22 @@
+{
+  "repo": "caiorja/Performance-Comercial",
+  "dashboard": {
+    "name": "Performance Comercial",
+    "pbip_path": "dashboards/Performance-Comercial/Performance Comercial.pbip"
+  },
+  "publishedUrl": "https://app.powerbi.com/view?r=eyJrIjoiNzk3NDYyMTQtZjgwYi00YmQwLWJlY2UtNGY4MTYxY2E1OTY5IiwidCI6IjA5ZjRiZmNhLTY3Y2QtNGU0Zi05NjNkLWExYzk1MzEyNmMwNCJ9",
+  "images": {
+    "pg01": "assets/screenshots/pg01.jpg",
+    "pg02": "assets/screenshots/pg02.jpg"
+  },
+  "license": "MIT",
+  "generatedAt": "2025-11-08",
+  "agent": {
+    "name": "Trae github_import",
+    "templates": [
+      "README raiz padrão",
+      "README dashboard padrão"
+    ],
+    "commit": "1f0be4b"
+  }
+}
