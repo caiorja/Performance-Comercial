@@ -1,7 +1,7 @@
 # Performance Comercial — Dashboard Power BI (PBIP)
 
 Este repositório contém o projeto Power BI em formato PBIP do dashboard "Performance Comercial".
-Ele segue o padrão do repositório "Investimentos" para facilitar versionamento, colaboração e reprodução do ambiente.
+Este é uma demonstração de um dashboard voltado setor de vendas mas com alcance entre diretoria, surpevisores e vendedores.
 
 ## Visualização online
 
