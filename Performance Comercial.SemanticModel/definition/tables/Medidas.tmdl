@@ -1,0 +1,233 @@
+table Medidas
+	lineageTag: fdd84cfc-4ef7-4585-ac1d-f6d849b01284
+
+	measure Faturamento = SUM(fato[valor_bruto])
+		formatString: "R$"\ #,0;-"R$"\ #,0;"R$"\ #,0
+		lineageTag: 159729c3-f9b2-4c85-90bb-fd7c87136639
+
+		annotation PBI_FormatHint = {"currencyCulture":"pt-BR"}
+
+	measure 'Quantidade de Vendas' = DISTINCTCOUNT(fato[num_venda])
+		formatString: #,0
+		lineageTag: 68885f2c-5d81-467e-9fdd-ed155d18c267
+
+	measure 'Ticket Médio' = ```
+			
+			    DIVIDE(
+			            [Faturamento] , [Quantidade de Vendas])
+			```
+		formatString: #,0.00
+		lineageTag: d029a1d6-ad53-495e-918d-353cd8ea18af
+
+	measure 'Quantidade de Itens Vendidos' = SUM(fato[qtd_itens])
+		formatString: #,0
+		lineageTag: 0fefd781-ec12-498f-8a62-b4b18fe9c2c5
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	measure 'Devolução %' = ```
+			
+			    DIVIDE(
+			            CALCULATE(COUNTROWS(fato),fato[ocorrencia_devolucao] = "1"),
+			            COUNTROWS(fato))
+			```
+		formatString: 0.00%;-0.00%;0.00%
+		lineageTag: aa028ba4-d6d0-4246-a912-445c3384edcb
+
+	measure 'Média Atrasos dia' = ```
+			
+			  CALCULATE(
+			      AVERAGE(fato[atraso_entrega_dias]),
+			      FILTER(fato, fato[atraso_entrega_dias] > 0)
+			  )
+			```
+		formatString: 0
+		lineageTag: 31beaac4-baa3-4011-8e30-491e53b8a506
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	measure 'Média atencipados dia' = ```
+			
+			  CALCULATE(
+			      AVERAGE(fato[atraso_entrega_dias]),
+			      FILTER(fato, fato[atraso_entrega_dias] < 1)
+			  ) * -1
+			```
+		formatString: 0
+		lineageTag: 1c254b31-5f21-4881-80a8-1d6c226c78bf
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	measure '% Pedidos Atrasados' = ```
+			
+			  DIVIDE(
+			      CALCULATE(COUNTROWS(fato), FILTER(fato, fato[atraso_entrega_dias] > 0)),
+			      COUNTROWS(fato)
+			  )
+			```
+		formatString: 0.00%;-0.00%;0.00%
+		lineageTag: af4f59ae-9c9c-4847-b29f-534e5182c937
+
+	measure 'Prazo Médio de Entrega (dias)' =
+			
+			AVERAGE(fato[atraso_entrega_dias])
+		lineageTag: 77165ad4-74cf-4327-a985-eafc817a3ab1
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Pedidos Antecipados' = ```
+			
+			      CALCULATE([Qtde linhas], FILTER(fato, fato[atraso_entrega_dias] < 1))
+			```
+		formatString: #,0
+		lineageTag: 4a62f7e3-686b-4450-ad04-4d29342a6421
+
+	measure 'Pedidos Atrasados' = ```
+			
+			    CALCULATE(
+			                [Qtde linhas], fato[atraso_entrega_dias] > 0)
+			```
+		formatString: #,0
+		lineageTag: 0a17e192-6aef-4d5f-8d3a-ca0ea8538186
+
+	measure 'Qtde linhas' = COUNTROWS(fato)
+		formatString: 0
+		lineageTag: 31170d7e-4b51-4d77-b59c-1ff6601ff872
+
+	measure 'Participação Atraso Supervisor' = ```
+			
+			DIVIDE(
+			        [Pedidos Atrasados],
+			        CALCULATE(
+			                    [Pedidos Atrasados], ALL(dim_supervisor[supervisor])))
+			                    
+			```
+		formatString: 0.00%;-0.00%;0.00%
+		lineageTag: 926d6a4d-e9fc-417d-8c26-1d35f82ad959
+
+	measure 'Participação Devolução Supervisor' = ```
+			
+			    DIVIDE(
+			            [Qtde Devoluções],
+			            CALCULATE([Qtde Devoluções],ALL(dim_supervisor[supervisor])))
+			```
+		formatString: 0.00%;-0.00%;0.00%
+		lineageTag: a13afd40-a9bc-4c9d-a981-d2f9a144c039
+
+	measure 'Qtde Devoluções' = ```
+			
+			        CALCULATE(COUNTROWS(fato), fato[ocorrencia_devolucao] = "1")
+			```
+		formatString: 0
+		lineageTag: a09ff813-47e9-406d-aad8-4242b20ee579
+
+	measure 'Faturamento últimos 6 meses' =
+			
+			CALCULATE(
+			    [Faturamento],
+			    DATESINPERIOD(dim_data_venda[data_venda], MAX(dim_data_venda[data_venda]), -6, MONTH)
+			)
+		formatString: "R$"\ #,0.###############;-"R$"\ #,0.###############;"R$"\ #,0.###############
+		lineageTag: b8c3ffe5-a3c8-40b9-a5c9-c9621f267031
+
+		annotation PBI_FormatHint = {"currencyCulture":"pt-BR"}
+
+	measure 'Faturamento 6 Meses Anteriores' =
+			
+			CALCULATE(
+			    [Faturamento],
+			    DATESINPERIOD(
+			        dim_data_venda[data_venda],
+			        CALCULATE(
+			            MAX(dim_data_venda[data_venda]),
+			            DATEADD(dim_data_venda[data_venda], -6, MONTH)
+			        ),
+			        -6,
+			        MONTH
+			    )
+			)
+		formatString: "R$"\ #,0.###############;-"R$"\ #,0.###############;"R$"\ #,0.###############
+		lineageTag: 823e65cb-3553-440f-a647-2036732c3f89
+
+		annotation PBI_FormatHint = {"currencyCulture":"pt-BR"}
+
+	measure 'Crescimento Faturamento 6M' =
+			
+			DIVIDE(
+			    [Faturamento Últimos 6 Meses] - [Faturamento 6 Meses Anteriores],
+			    [Faturamento 6 Meses Anteriores]
+			)
+		formatString: 0.00%;-0.00%;0.00%
+		lineageTag: 5f5b25ee-25b2-4af6-89fc-bf0cfca3b6fd
+
+	measure 'Participação Faturamento Equipe' = ```
+			
+			    DIVIDE(
+			            [Faturamento],
+			            CALCULATE([Faturamento], ALL(dim_equipe[equipe])))
+			```
+		formatString: 0.00%;-0.00%;0.00%
+		lineageTag: 8e618583-0a37-4410-b746-68c87aaa97b7
+
+	measure 'Preço Médio' = ```
+			AVERAGE(fato[preco_unitario]) 
+			```
+		formatString: "R$"\ #,0.00;-"R$"\ #,0.00;"R$"\ #,0.00
+		lineageTag: 1607b923-ea24-413c-b443-5356dca69189
+
+		annotation PBI_FormatHint = {"currencyCulture":"pt-BR"}
+
+	measure 'Qtde Vendedores' = DISTINCTCOUNT(dim_vendedor[vendedor_nom])
+		formatString: 0
+		lineageTag: 1673670f-b1d0-45f2-9014-24a629c2db0a
+
+	measure '% Custo X Preço' = ```
+			
+			        DIVIDE(SUM(fato[produto_custo_unitario]),SUM(fato[preco_unitario]))
+			        
+			```
+		formatString: 0.00%;-0.00%;0.00%
+		lineageTag: 73a29b17-0f7f-47bf-9880-f95d6c57bf19
+
+	measure Lucro =
+			
+			SUMX(
+			    fato,
+			    (fato[preco_unitario] - fato[produto_custo_unitario]) * fato[qtd_itens]
+			)
+		formatString: "R$"\ #,0;-"R$"\ #,0;"R$"\ #,0
+		lineageTag: ef27d767-f746-4bf6-8f35-e1f566cb963d
+
+		annotation PBI_FormatHint = {"currencyCulture":"pt-BR"}
+
+	measure 'Margem de Lucro' = ```
+			
+			    DIVIDE(
+			            [Lucro] , [Faturamento],0)
+			```
+		formatString: #,0.00%;-#,0.00%;#,0.00%
+		lineageTag: 0e2fb8d5-13ef-4219-b2bc-7acf95adfabe
+
+	measure 'Preço Produto' = SUM(fato[preco_unitario])
+		formatString: "R$"\ #,0.###############;-"R$"\ #,0.###############;"R$"\ #,0.###############
+		lineageTag: b2d620a5-b4b0-499f-ad3e-3184fa6eda22
+
+		annotation PBI_FormatHint = {"currencyCulture":"pt-BR"}
+
+	measure 'Custo Produto' = SUM(fato[produto_custo_unitario])
+		lineageTag: eedefbbf-5212-46e5-aa3b-b1d37e90f820
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	partition Medidas = m
+		mode: import
+		source =
+				let
+				    Fonte = Table.FromRows(Json.Document(Binary.Decompress(Binary.FromText("i44FAA==", BinaryEncoding.Base64), Compression.Deflate)), let _t = ((type nullable text) meta [Serialized.Text = true]) in type table [#"Coluna 1" = _t]),
+				    #"Tipo Alterado" = Table.TransformColumnTypes(Fonte,{{"Coluna 1", type text}}),
+				    #"Colunas Removidas" = Table.RemoveColumns(#"Tipo Alterado",{"Coluna 1"})
+				in
+				    #"Colunas Removidas"
+
+	annotation PBI_ResultType = Table
+

@@ -1,0 +1,76 @@
+table Supervisor
+	lineageTag: 6875579c-c42e-4f6c-8c1c-61985da9af40
+
+	measure 'Participação Atraso vendedor' =
+			
+			DIVIDE(
+			        [Pedidos Atrasados],
+			        CALCULATE(
+			                    [Pedidos Atrasados], ALL(dim_vendedor[vendedor_nom])))
+		formatString: 0%;-0%;0%
+		lineageTag: 8b7f8422-4cfe-462a-b46c-c71521eb709b
+
+	measure 'Participação Devolução Vendedor' = ```
+			
+			var calc = 
+			    DIVIDE(
+			            [Qtde Devoluções],
+			            CALCULATE([Qtde Devoluções],ALL(dim_vendedor[vendedor_nom])))
+			RETURN
+			IF(calc = 1 , [Devolução %], calc)
+			```
+		formatString: 0.00%;-0.00%;0.00%
+		lineageTag: e4cccfb0-dd26-4b01-b81e-42c40740ba1b
+
+	measure 'Participação Faturamento Vendedor' = ```
+			
+			    DIVIDE(
+			            [Faturamento],
+			            CALCULATE([Faturamento], ALL(fato)))
+			            
+			```
+		formatString: 0.00%;-0.00%;0.00%
+		lineageTag: b7da99f9-5b78-42eb-8530-8dfab5bbf3de
+
+	measure 'Meta por Vendedor' = ```
+			
+			DIVIDE(
+			        CALCULATE([Faturamento], all(dim_vendedor[vendedor_nom])),
+			        CALCULATE([Qtde Vendedores], ALL(dim_vendedor[vendedor_nom]))) * 1.6
+			
+			```
+		formatString: "R$"\ #,0;-"R$"\ #,0;"R$"\ #,0
+		lineageTag: c69172b9-62f8-4bac-8e93-cd14978bf28c
+
+		annotation PBI_FormatHint = {"currencyCulture":"pt-BR"}
+
+	measure 'Qtde Clientes' = DISTINCTCOUNT(fato[cliente_cod])
+		formatString: #,0
+		lineageTag: d3081e16-aa82-4bd5-adba-f701e7438e41
+
+	measure 'Meta Atingida' =
+			
+			VAR _faturamento = [Faturamento]
+			VAR _meta = [Meta por Vendedor]
+			RETURN
+			    IF(
+			        ISBLANK(_faturamento) || ISBLANK(_meta),
+			        BLANK(),
+			        IF(_faturamento - _meta > 0, "✅", "🚫")
+			    )
+		lineageTag: ca9b6ad3-36b9-49fe-ad84-b066955b477b
+
+	partition Supervisor = m
+		mode: import
+		source =
+				let
+				    Fonte = Table.FromRows(Json.Document(Binary.Decompress(Binary.FromText("i44FAA==", BinaryEncoding.Base64), Compression.Deflate)), let _t = ((type nullable text) meta [Serialized.Text = true]) in type table [#"Coluna 1" = _t]),
+				    #"Tipo Alterado" = Table.TransformColumnTypes(Fonte,{{"Coluna 1", type text}}),
+				    #"Colunas Removidas" = Table.RemoveColumns(#"Tipo Alterado",{"Coluna 1"})
+				in
+				    #"Colunas Removidas"
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navegação
+

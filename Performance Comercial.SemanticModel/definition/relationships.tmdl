@@ -1,0 +1,67 @@
+relationship AutoDetected_f71554ca-d318-41f9-acc6-237056f64cc3
+	fromColumn: fato.vendedor_cod
+	toColumn: dim_vendedor.vendedor_cod
+
+relationship AutoDetected_7ecff81e-a0c7-42b3-869c-4faf2ccaf8e1
+	isActive: false
+	fromColumn: dim_vendedor.supervisor
+	toColumn: dim_supervisor.supervisor
+
+relationship AutoDetected_e1b876aa-087a-4f5f-a291-11a7c9319139
+	isActive: false
+	fromColumn: dim_vendedor.equipe
+	toColumn: dim_equipe.equipe
+
+relationship AutoDetected_76cb11d4-f4b1-4159-ae2f-27da18fe5e62
+	fromColumn: fato.produto_cod
+	toColumn: dim_produtos.produto_cod
+
+relationship e3a0ec5a-9844-4374-9bd5-0262bd793e35
+	joinOnDateBehavior: datePartOnly
+	fromColumn: dim_data_entrega_prevista.data_entrega_prevista
+	toColumn: LocalDateTable_941ca95b-949c-4452-8893-9ccb03259e65.Date
+
+relationship AutoDetected_17e1ee85-342a-4558-aca1-ef05d7c46dae
+	fromColumn: fato.cod_data_venda
+	toColumn: dim_data_venda.cod_data_venda
+
+relationship AutoDetected_b9b15a4e-40db-4449-930a-7a88f5917e74
+	fromColumn: fato.cod_data_entrega_prevista
+	toColumn: dim_data_entrega_prevista.cod_data_entrega_prevista
+
+relationship AutoDetected_5a1dc675-d03f-43cd-8efd-c7512219404f
+	fromColumn: fato.cod_data_entrega
+	toColumn: dim_data_entrega.cod_data_entrega
+
+relationship AutoDetected_e6bfab28-0cca-4681-af63-9833446438da
+	fromColumn: fato.supervisor_cod
+	toColumn: dim_supervisor.supervisor_cod
+
+relationship AutoDetected_ea52e1ff-1e4c-4bc9-a681-23020c2a27ec
+	fromColumn: fato.equipe_cod
+	toColumn: dim_equipe.equipe_cod
+
+relationship AutoDetected_2d5a7f9d-463c-4382-8d32-fbb873c989bd
+	fromColumn: fato.cidade_cod
+	toColumn: dim_cidade.cidade_cod
+
+relationship 48880413-dd54-abf7-539e-44a0c5b12e35
+	fromColumn: fato.cliente_cod
+	toColumn: dim_clientes.cliente_cod
+
+relationship 50637b5a-559c-42f0-aa63-b444720c5de5
+	joinOnDateBehavior: datePartOnly
+	fromColumn: dcalendario.Data
+	toColumn: LocalDateTable_6a1fc152-5254-4b14-9686-ccc3f2fa50cb.Date
+
+relationship 3252a904-dc31-4653-8980-445e1d3446ee
+	joinOnDateBehavior: datePartOnly
+	fromColumn: dim_data_entrega.data_entrega
+	toColumn: LocalDateTable_dcfd9323-c532-4adb-aa3f-a0e6d13684b2.Date
+
+relationship c8e82687-fa06-9621-911a-a3ea604fa667
+	crossFilteringBehavior: bothDirections
+	fromCardinality: one
+	fromColumn: dim_data_venda.data_venda
+	toColumn: dcalendario.Data
+
